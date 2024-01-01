@@ -11,22 +11,64 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  email        String  @unique
-  name         String
-  password     String  @db.VarChar(255)
-  roleId       Int
-  role         Role    @relation(fields: [roleId], references: [id])
-  createdAt    Int
-  updatedAt    Int?
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  name      String
+  password  String @db.VarChar(255)
+  roleId    Int
+  role      Role   @relation(fields: [roleId], references: [id])
+  createdAt Int
+  updatedAt Int?
 
   @@map("users")
 }
 
 model Role {
-  id    Int    @id @default(autoincrement())
-  name  String
-  users User[]
+  id              Int              @id @default(autoincrement())
+  name            String           @unique()
+  users           User[]
+  rolePermissions RolePermission[]
 
   @@map("roles")
+}
+
+model Menu {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique()
+  icon     String
+  url      String?
+  subMenus SubMenu[]
+
+  @@map("menus")
+}
+
+model SubMenu {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique()
+  menuId Int
+  menu   Menu    @relation(fields: [menuId], references: [id])
+  icon   String
+  url    String?
+
+  @@map("sub_menus")
+}
+
+model Permission {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique() // route name
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id              Int        @id @default(autoincrement())
+  roleId          Int
+  role            Role       @relation(fields: [roleId], references: [id])
+  permissionId    Int
+  permission      Permission @relation(fields: [permissionId], references: [id])
+  active          Int        @default(0) @db.TinyInt()
+  canUpdateOthers Int        @default(0) @db.TinyInt() // default false
+  createdAt       Int
+  updatedAt       Int
+
+  @@map("role_permissions")
 }

@@ -50,9 +50,14 @@ export const getById = async(req, res, next) =>{
 
 export const update = async(req, res, next) => {
   try {
-    if(+req.params.id !== +req.user.sub) throw new ResponseError(403, "Forbidden")
+    if (
+      req.user.roleId !== 99 &&
+      +req.params.id !== req.user.sub &&
+      req.user.permission.canUpdateOthers === 0
+    ) throw new ResponseError(403, "Forbidden")
 
-    const result = await userService.update(+req.params.id, req.body)
+    const result = await userService.update(+req.params.id, req.body, req.user)
+
     return response(res, result)
   } catch (error) {
     next(error)
@@ -61,7 +66,11 @@ export const update = async(req, res, next) => {
 
 export const updatePassword = async(req, res, next) => {
   try {
-    if(+req.params.id !== +req.user.sub) throw new ResponseError(403, "Forbidden")
+    if (
+      req.user.roleId !== 99 &&
+      +req.params.id !== req.user.sub &&
+      req.user.permission.canUpdateOthers === 0
+    ) throw new ResponseError(403, "Forbidden")
 
     await userService.updatePassword(+req.params.id, req.body)
     return response(res, null, "password change successfully")

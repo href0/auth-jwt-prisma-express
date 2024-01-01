@@ -4,6 +4,7 @@ const signupValidation = object({
   email    : string().email(),
   name     : string().required().strict(true),
   password : string().required(),
+  roleId   : number().notRequired(),
 })
 
 const signinValidation = object({

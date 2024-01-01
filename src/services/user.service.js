@@ -1,6 +1,7 @@
 import { prisma } from "../app/database.js"
 import { logger } from "../app/logging.js"
 import { ResponseError } from "../error/response.error.js"
+import { hashBcrypt } from "../helpers/common.js"
 import { createUserValidation, findAllUserValidation, findByIdValidation, updatePasswordUserValidation, updateUserValidation } from "../validations/user.validation.js"
 import { validate } from "../validations/validation.js"
 import bcrypt from 'bcrypt'
@@ -64,7 +65,8 @@ const findById = async(id) => {
   return user
 } 
 
-const update = async(id, request) => {
+const update = async(id, request, currentUser) => {
+
   await validate(findByIdValidation, { id })
   const data = await validate(updateUserValidation, request)
 
@@ -100,10 +102,8 @@ const updatePassword = async(id, request) => {
   await prisma.user.findUniqueOrThrow({
     where : { id : id }
   })
-
-  const saltRounds = 10;
-  const salt = bcrypt.genSaltSync(saltRounds);
-  const passwordHash = bcrypt.hashSync(data.password, salt)
+  
+  const passwordHash = hashBcrypt(data.password)
 
   await prisma.user.update({
     where : { id : id },

@@ -1,57 +1,55 @@
 import { PrismaClient } from "@prisma/client"
 import { faker } from "@faker-js/faker";
-import bcrypt from "bcrypt"
+import { hashBcrypt } from "../src/helpers/common.js";
+import { permissionSeed } from "../src/seeders/permission.seed.js";
+import { roleSeed } from "../src/seeders/role.seed.js";
+import { userSeed } from "../src/seeders/user.seed.js";
+
 const prisma = new PrismaClient()
 
 async function main() {
-  const admin = await prisma.role.upsert({
-    where : { id : 1 },
-    update: {},
-    create: {
-      id: 1,
-      name: 'Admin',
-    },
-  })
-  const user = await prisma.role.upsert({
-    where : { id : 2 },
-    update: {},
-    create: {
-      id: 2,
-      name: 'User',
-    },
-  })
+  await roleSeed()
+  await userSeed()
+  await permissionSeed()
 
-  const saltRounds = 10;
-  const salt = bcrypt.genSaltSync(saltRounds);
-  const passwordHash = bcrypt.hashSync('href', salt)
-  for (let x = 1; x <= 1000000; x++) {
-    console.log('muda muda muda muda ', x)
-    const email = faker.internet.email()
-    const name = faker.person.fullName()
-    const now = new Date()
-    const year = now.getFullYear()
-    const date = now.getDate()
-    const currMonth = now.getMonth() + 1
-
-    const from = new Date(`${year}-${currMonth}-01`).getTime()/ 1000
-    const to = new Date(`${year}-${currMonth}-${date}`) / 1000
-
-    const randomDate = Math.floor(Math.random() * (to - from + 1) ) + from;
-
-    await prisma.user.upsert({
-      where : { email : email },
-      update: {},
-      create: {
-          // id: 1,
-        name      : name,
-        email     : email,
-        password  : passwordHash,
-        roleId    : 2,
-        createdAt : randomDate,
-        updatedAt : randomDate
-      },
-    })
+  switch (process.env.NODE_ENV) {
+    case 'development':
+       /** data for your development environment */
+      const password = hashBcrypt("href")
+      // create 100 user randomly
+      for (let x = 1; x <= 100; x++) {
+        console.log('muda muda muda muda ', x)
+        const email = faker.internet.email()
+        const name = faker.person.fullName()
+        const now = new Date()
+        const year = now.getFullYear()
+        const date = now.getDate()
+        const currMonth = now.getMonth() + 1
     
+        const from = new Date(`${year}-${currMonth}-01`).getTime()/ 1000
+        const to = new Date(`${year}-${currMonth}-${date}`) / 1000
+    
+        const randomDate = Math.floor(Math.random() * (to - from + 1) ) + from;
+    
+        await prisma.user.upsert({
+          where : { email : email },
+          update: {},
+          create: {
+            name      : name,
+            email     : email,
+            password  : password,
+            roleId    : 2,
+            createdAt : randomDate,
+            updatedAt : randomDate
+          },
+        })
+      }
+      break
+    case 'test':
+      /** data for your test environment */
+      break
+    default:
+      break
   }
 }
 

@@ -1,4 +1,5 @@
 import userService from "../services/user.service.js";
+import bcrypt from "bcrypt"
 
 export const dateToString = (date = null) => {
   date = date ? new Date(waktu) : new Date();
@@ -15,7 +16,7 @@ export const dateToString = (date = null) => {
   return formattedDate;
 }
 
-export const addLinksToPagination = (baseUrl, curentUrl, data, pagination, filter) =>{
+export const addLinksToPagination = (baseUrl, curentUrl, data, pagination, filter) => {
   filter.page    = filter.page || 1
   filter.perPage = filter.perPage || userService.DEFAULT_PER_PAGE
   let nextPage = Number(filter.page) + 1
@@ -36,4 +37,12 @@ export const addLinksToPagination = (baseUrl, curentUrl, data, pagination, filte
   pagination.links = links
 
   return pagination
+}
+
+export const hashBcrypt = (value) => {
+  const saltRounds = 10;
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const result = bcrypt.hashSync(value, salt)
+
+  return result
 }

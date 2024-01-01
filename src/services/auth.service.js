@@ -1,5 +1,6 @@
 import { prisma } from "../app/database.js"
 import { ResponseError } from "../error/response.error.js"
+import { hashBcrypt } from "../helpers/common.js"
 import { signinValidation, signupValidation } from "../validations/auth.validation.js"
 import { validate } from "../validations/validation.js"
 import bcrypt from "bcrypt"
@@ -7,11 +8,10 @@ import jwt from 'jsonwebtoken'
 
 const signup = async(request) => {
   await validate(signupValidation, request)
-  const saltRounds = 10;
-  const salt = bcrypt.genSaltSync(saltRounds);
-  const passwordHash = bcrypt.hashSync(request.password, salt)
-  request.password = passwordHash
+  const passwordHash = hashBcrypt(request.password)
+  request.password  = passwordHash
   request.createdAt = new Date().getTime() / 1000
+  request.roleId    = 2
 
   const signup = await prisma.user.create({
     data : request,
@@ -33,7 +33,8 @@ const signin = async(request) => {
   const payload = {
     sub   : user.id,
     email : user.email,
-    name  : user.name
+    name  : user.name,
+    roleId  : user.roleId
   }
 
   const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
@@ -56,15 +57,16 @@ const refreshToken = async(token) => {
 
     const user = await prisma.user.findUnique({
       where : { id : decoded.sub },
-      select : { id: true, name: true, email: true, createdAt : true }
+      select : { id: true, name: true, email: true, createdAt : true, roleId : true }
     })
 
     if(!user) throw new ResponseError(404, "User not found")
 
     const payload = {
-      sub   : decoded.id,
-      email : decoded.email,
-      name  : decoded.name
+      sub   : user.id,
+      email : user.email,
+      name  : user.name,
+      roleId  : user.roleId
     }
 
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
