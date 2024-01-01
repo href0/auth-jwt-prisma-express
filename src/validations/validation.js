@@ -1,5 +1,7 @@
 export const validate = async (schema, request) => {
-  await schema.validate(request, {
+  const result = await schema.validate(request, {
     abortEarly : false
   })
+
+  return result
 }

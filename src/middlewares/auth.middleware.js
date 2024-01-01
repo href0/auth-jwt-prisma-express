@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 export const authMiddleware = async(req, res, next) => {
   try {
     const token = req.headers['authorization'] && req.headers['authorization'].split(" ")[1]
-    if(!token) throw new ResponseError(401, "Token not found")
+    if(!token) throw new ResponseError(401, "Unauthorized")
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     req.user = decoded
     logger.info('token verified')

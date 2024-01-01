@@ -1,9 +1,12 @@
 import express from "express"
-import { create, getAll } from "../controllers/user.controller.js"
+import { create, getAll, getById, update, updatePassword } from "../controllers/user.controller.js"
 
 const router = express.Router()
 
 router.get('/', getAll)
+router.get('/:id', getById)
 router.post('/', create)
+router.put('/:id', update)
+router.patch('/change-password/:id', updatePassword)
 
 export default router

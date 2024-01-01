@@ -1,3 +1,5 @@
+import userService from "../services/user.service.js";
+
 export const dateToString = (date = null) => {
   date = date ? new Date(waktu) : new Date();
 
@@ -14,6 +16,8 @@ export const dateToString = (date = null) => {
 }
 
 export const addLinksToPagination = (baseUrl, curentUrl, data, pagination, filter) =>{
+  filter.page    = filter.page || 1
+  filter.perPage = filter.perPage || userService.DEFAULT_PER_PAGE
   let nextPage = Number(filter.page) + 1
   if( filter.page >= pagination.totalPages ) {
     nextPage = null
