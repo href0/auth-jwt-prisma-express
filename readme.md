@@ -72,9 +72,46 @@ Ikuti langkah-langkah di bawah ini untuk mulai menggunakan proyek ini:
     npx prisma db seed
     ```
 
-    Ini diperlukan untuk memberikan data awal seperti user dan role, bisa anda cek di `prisma/seed.js`
+    Ini diperlukan untuk memberikan data awal seperti user dan role, bisa anda cek di `prisma/seed.js`.
+    Setelah menjalankan seeder, database anda sekarang akan berisi seperti dibawah ini :
 
-4. **Jalankan Aplikasi**
+    - **Roles**
+        
+        | ID  | Name 
+        |-----|-------|
+        | 1   | Admin
+        | 2   | User
+        | 99  | Superadmin
+
+    - **Permissions**
+        
+        | ID | Name 
+        |----|-------|
+        | 1  | user
+
+    - **Users**
+        
+        | ID | Name       | Email                | roleId
+        |----|------------|----------------------|--------|
+        | 1  | superadmin | superadmin@gmail.com | 99
+        | 2  | admin      | admin@gmail.com      | 1
+        | 3  | user       | user@gmail.com       | 2
+      
+      Setelah table Users terisi seperti diatas, anda bisa melakukan login dengan endpoint `/auth/signin`
+      1. **Superadmin**
+            - Email: superadmin@gmail.com
+            - Password: superadmin
+         
+      2. **Admin**
+            - Email: admin@gmail.com
+            - Password: admin
+
+      3. **User**
+            - Email: user@gmail.com
+            - Password: user
+   
+
+5. **Jalankan Aplikasi**
     Setelah semua selesai, anda bisa menjalankan aplikasi dengan menjalankan perintah : 
 
     ```bash
