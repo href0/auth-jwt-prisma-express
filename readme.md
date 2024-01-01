@@ -97,7 +97,7 @@ Ikuti langkah-langkah di bawah ini untuk mulai menggunakan proyek ini:
         | 2  | admin      | admin@gmail.com      | 1
         | 3  | user       | user@gmail.com       | 2
       
-      Setelah table Users terisi seperti diatas, anda bisa melakukan login dengan endpoint `/auth/signin`
+      Setelah table `Users` terisi seperti diatas, anda bisa melakukan login dengan endpoint `/auth/signin` dengan Email dan Password di bawah ini : 
       1. **Superadmin**
             - Email: superadmin@gmail.com
             - Password: superadmin
