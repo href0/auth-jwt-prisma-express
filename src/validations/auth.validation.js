@@ -8,7 +8,7 @@ const signupValidation = object({
 })
 
 const signinValidation = object({
-  email    : string().email(),
+  email    : string().required().email(),
   password : string().required(),
 })
 

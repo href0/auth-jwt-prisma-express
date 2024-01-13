@@ -6,9 +6,10 @@ import { errorMiddleware } from "./src/middlewares/error.middleware.js"
 import { logger } from "./src/app/logging.js"
 import { notFound } from "./src/middlewares/not-found.middleware.js"
 import cookieParser  from "cookie-parser"
+import cors from 'cors'
 
 const app = express()
-
+app.use(cors())
 dotenv.config()
 const PORT = process.env.PORT || 3000
 
