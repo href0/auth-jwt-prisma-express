@@ -115,7 +115,7 @@ Ikuti langkah-langkah di bawah ini untuk mulai menggunakan proyek ini:
     Setelah semua selesai, anda bisa menjalankan aplikasi dengan menjalankan perintah : 
 
     ```bash
-    npx run start
+    npm run start
     ```
 
 
