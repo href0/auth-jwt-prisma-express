@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client"
+import { logger } from "../app/logging.js"
 const prisma = new PrismaClient()
 
 export const roleSeed = async () => {
-
+  logger.info('excecute role seed!')
   // superadmin => can access all permissions
   await prisma.role.upsert({
     where : { id : 99 },

@@ -13,6 +13,12 @@ const signup = async(request) => {
   request.createdAt = new Date().getTime() / 1000
   request.roleId    = 2
 
+  const isExists = await prisma.user.findUnique({
+    where : { email : request.email }
+  })
+  
+  if(isExists) throw new ResponseError(409, "Email already exists")
+
   const signup = await prisma.user.create({
     data : request,
     select : { id: true, name : true, email : true, createdAt : true, updatedAt : true }

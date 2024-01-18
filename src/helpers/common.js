@@ -1,8 +1,8 @@
 import userService from "../services/user.service.js";
 import bcrypt from "bcrypt"
 
-export const dateToString = (date = null) => {
-  date = date ? new Date(waktu) : new Date();
+export const dateToString = (date = null, onlyDate = false) => {
+  date = date ? new Date(date) : new Date();
 
   const tahun = date.getFullYear();
   const bulan = String(date.getMonth() + 1).padStart(2, '0');
@@ -12,7 +12,10 @@ export const dateToString = (date = null) => {
   const menit = String(date.getMinutes()).padStart(2, '0');
   const detik = String(date.getSeconds()).padStart(2, '0');
 
-  const formattedDate = `${tahun}-${bulan}-${hari} ${jam}:${menit}:${detik}`;
+  let formattedDate = `${tahun}-${bulan}-${hari}`
+  if(!onlyDate) {
+    formattedDate += ` ${jam}:${menit}:${detik}`
+  }
   return formattedDate;
 }
 

@@ -22,8 +22,8 @@ export const errorMiddleware = async(err, req, res, next) =>{
   } else if (err instanceof ValidationError){
     return res.status(400).json({
       statusCode : 400,
-      message    : err.errors,
-      data       : null
+      message    : "Validation Error",
+      data       : err.errors
     })
   } 
   else {

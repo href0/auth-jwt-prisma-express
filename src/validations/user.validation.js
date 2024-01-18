@@ -8,14 +8,21 @@ const findAllUserValidation = object({
 })
 
 const createUserValidation = object({
-  email    : string().email(),
-  name     : string().required().strict(true),
-  password : string().required(),
+  email     : string().email(),
+  name      : string().required().strict(true),
+  gender    : string().notRequired(),
+  birthDate : date().notRequired(),
+  phone     : string().notRequired(),
+  avatar    : string().notRequired(),
 })
 
 const updateUserValidation = object({
   email    : string().email(),
   name     : string().required().strict(true),
+  gender    : string().notRequired(),
+  birthDate : date().notRequired(),
+  phone     : string().notRequired(),
+  avatar    : string().notRequired(),
 })
 
 const updatePasswordUserValidation = object({

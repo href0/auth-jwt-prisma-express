@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client"
 import { hashBcrypt } from "../helpers/common.js"
+import { logger } from "../app/logging.js"
 
 const prisma = new PrismaClient()
 
 export const userSeed = async () => {
-
+  logger.info('excecute user seed!')
   // Superadmin
   await prisma.user.upsert({
     where : { id : 1 },

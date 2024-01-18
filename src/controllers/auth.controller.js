@@ -16,7 +16,11 @@ export const signin = async (req, res, next) =>{
   try {
     const signin = await authService.signin(req.body)
     const maxAge = process.env.COOKIE_EXPIRED * 24 * 60 * 60 * 1000
-    res.cookie('refreshToken', signin.refreshToken, { maxAge : maxAge, httpOnly: true })
+    res.cookie('refreshToken', signin.refreshToken, { 
+      maxAge : maxAge, 
+      secure : process.env.NODE_ENV == 'production' ? true : false,  
+      httpOnly: true 
+    })
     const { refreshToken, ...other } = signin
 
     return response(res, other)
