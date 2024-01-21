@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -43,27 +43,21 @@ model Menu {
   name     String    @unique()
   icon     String
   url      String?
-  subMenus SubMenu[]
+  childs   SubMenu[]
 
   @@map("menus")
 }
 
 model SubMenu {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique()
-  menuId Int
-  menu   Menu    @relation(fields: [menuId], references: [id])
-  icon   String
-  url    String?
+  id         Int          @id @default(autoincrement())
+  name       String       @unique()
+  menuId     Int
+  menu       Menu         @relation(fields: [menuId], references: [id])
+  icon       String
+  url        String?
+  permission Permission[]
 
   @@map("sub_menus")
-}
-
-model Permission {
-  id              Int              @id @default(autoincrement())
-  name            String           // route name
-  method          Method           @default(GET)
-  rolePermissions RolePermission[]
 }
 
 model RolePermission {
@@ -72,18 +66,29 @@ model RolePermission {
   role            Role       @relation(fields: [roleId], references: [id])
   permissionId    Int
   permission      Permission @relation(fields: [permissionId], references: [id])
-  active          Int        @default(0) @db.TinyInt()
-  canUpdateOthers Int        @default(0) @db.TinyInt() // default false
+  active          Int        @default(0) @db.SmallInt()
+  canUpdateOthers Int        @default(0) @db.SmallInt() // default false
   createdAt       Int
   updatedAt       Int
 
   @@map("role_permissions")
 }
 
+model Permission {
+  id              Int              @id @default(autoincrement())
+  subMenu         SubMenu          @relation(fields: [subMenuId], references: [id])
+  subMenuId       Int
+  route           String
+  method          Method           @default(GET)
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
 model Product {
   id          Int     @id @default(autoincrement())
   name        String  @unique()
-  price       Float   @db.Double()
+  price       Float   @db.DoublePrecision()
   description String?
   createdAt   Int
   updatedAt   Int

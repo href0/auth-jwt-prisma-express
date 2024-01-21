@@ -36,6 +36,18 @@ prisma.$on('info', (e) =>{
   logger.debug(e)
 })
 
+prisma.$use(async (params, next) => {
+  const result = await next(params);
+  console.log('params ', params)
+  console.log('result ', result)
+  // Disconnect setelah query selesai
+  logger.info('Finish')
+  prisma.$disconnect();
+  logger.info('Disconnect prisma')
+  return result;
+});
+
+
 export {
   prisma
 }

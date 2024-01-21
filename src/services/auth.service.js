@@ -5,6 +5,7 @@ import { signinValidation, signupValidation } from "../validations/auth.validati
 import { validate } from "../validations/validation.js"
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
+const userSelect = { id: true, name : true, email : true, createdAt:true, updatedAt : true, gender : true, phone : true, avatar : true, birthDate : true }
 
 const signup = async(request) => {
   await validate(signupValidation, request)
@@ -30,7 +31,9 @@ const signup = async(request) => {
 const signin = async(request) => {
   await validate(signinValidation, request)
 
-  const user = await prisma.user.findUnique({where : {email : request.email}})
+  const user = await prisma.user.findUnique({
+    where : { email : request.email },
+  })
   if(!user) throw new ResponseError(400, 'Email or password wrong!')
 
   const hash = bcrypt.compareSync(request.password, user.password);

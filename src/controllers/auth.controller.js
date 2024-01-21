@@ -19,7 +19,8 @@ export const signin = async (req, res, next) =>{
     res.cookie('refreshToken', signin.refreshToken, { 
       maxAge : maxAge, 
       secure : process.env.NODE_ENV == 'production' ? true : false,  
-      httpOnly: true 
+      httpOnly: true,
+      sameSite :  process.env.NODE_ENV == 'production' ? 'none' : 'strict'
     })
     const { refreshToken, ...other } = signin
 
@@ -32,6 +33,7 @@ export const signin = async (req, res, next) =>{
 export const refreshToken = async(req, res, next) => {
   try {
     const refreshToken = req.cookies['refreshToken']
+    logger.info('refreshToken = ' + refreshToken)
     if(!refreshToken) throw new ResponseError(401, 'Unauthorized')
 
     const user = await authService.refreshToken(refreshToken)

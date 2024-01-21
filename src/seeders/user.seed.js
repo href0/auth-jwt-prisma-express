@@ -46,7 +46,7 @@ export const userSeed = async () => {
       name      : 'admin',
       email     : 'admin@gmail.com',
       password  : hashBcrypt("admin"),
-      roleId    : 2,
+      roleId    : 1,
       createdAt : new Date().getTime() / 1000,
       updatedAt : new Date().getTime() / 1000
     },

@@ -4,13 +4,19 @@ import { hashBcrypt } from "../src/helpers/common.js";
 import { permissionSeed } from "../src/seeders/permission.seed.js";
 import { roleSeed } from "../src/seeders/role.seed.js";
 import { userSeed } from "../src/seeders/user.seed.js";
+import { rolePermissionSeed } from "../src/seeders/role-permission.seed.js";
+import { menuSeed } from "../src/seeders/menu.seed.js";
+import { subMenuSeed } from "../src/seeders/sub-menu.seed.js";
 
 const prisma = new PrismaClient()
 
 async function main() {
   await roleSeed()
   await userSeed()
+  await menuSeed()
+  await subMenuSeed()
   await permissionSeed()
+  await rolePermissionSeed()
 
   switch (process.env.NODE_ENV) {
     case 'development':
