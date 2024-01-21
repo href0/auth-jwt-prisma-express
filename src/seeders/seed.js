@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client"
 import { faker } from "@faker-js/faker";
-import { hashBcrypt } from "../src/helpers/common.js";
-import { permissionSeed } from "../src/seeders/permission.seed.js";
-import { roleSeed } from "../src/seeders/role.seed.js";
-import { userSeed } from "../src/seeders/user.seed.js";
-import { rolePermissionSeed } from "../src/seeders/role-permission.seed.js";
-import { menuSeed } from "../src/seeders/menu.seed.js";
-import { subMenuSeed } from "../src/seeders/sub-menu.seed.js";
+import { hashBcrypt } from "../../src/helpers/common.js";
+import { permissionSeed } from "./permission.seed.js";
+import { roleSeed } from "./role.seed.js";
+import { userSeed } from "./user.seed.js";
+import { rolePermissionSeed } from "./role-permission.seed.js";
+import { menuSeed } from "./menu.seed.js";
+import { subMenuSeed } from "./sub-menu.seed.js";
 
 const prisma = new PrismaClient()
 
