@@ -11,7 +11,7 @@ import cors from 'cors'
 const app = express()
 app.use(cors({
   origin : [
-    'https://dashboard-admin-mazer-angular-jqsaqp48a-href0.vercel.app',
+    'https://dashboard-admin-mazer-angular.vercel.app',
     'http://localhost:4200'
   ],
   credentials : true
