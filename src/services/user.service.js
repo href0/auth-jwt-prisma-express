@@ -1,10 +1,9 @@
 import { prisma } from "../app/database.js"
 import { logger } from "../app/logging.js"
 import { ResponseError } from "../error/response.error.js"
-import { dateToString, hashBcrypt } from "../helpers/common.js"
+import { dateToString, getResultsAndPagination, hashBcrypt } from "../helpers/common.js"
 import { createUserValidation, findAllUserValidation, findByIdValidation, updatePasswordUserValidation, updateUserValidation } from "../validations/user.validation.js"
 import { validate } from "../validations/validation.js"
-import bcrypt from 'bcrypt'
 const userSelect = { id: true, name : true, email : true, createdAt:true, updatedAt : true, gender : true, phone : true, avatar : true, birthDate : true }
 const DEFAULT_PER_PAGE = 10
 
@@ -40,52 +39,8 @@ const create = async (request) => {
 }
 
 const findAll  = async (filter) => {
-  filter.page    = +filter.page || 1
-  filter.perPage = +filter.perPage || DEFAULT_PER_PAGE
-  filter.sort    = filter.sort || 'desc'
-  filter.sortBy  = filter.sortBy || 'updatedAt'
- 
-  await validate(findAllUserValidation, filter)
-
-  let params = {
-    take    : filter.perPage,
-    skip    : (filter.page - 1) * filter.perPage,
-    orderBy : { [filter.sortBy] : filter.sort},
-    select  : userSelect
-  }
-
-  if(filter.search && filter.searchValue) {
-    params['where'] = { [filter.search] : { contains : filter.searchValue } }
-  }
-
-  const  { take, skip, select, ...noLimit } = params
-  const [ total, users ] = await Promise.all([
-    prisma.user.count(noLimit),
-    prisma.user.findMany(params),
-  ])
-
-
-  let totalPages =  Math.ceil(total / filter.perPage)
-  if(totalPages > 10) {
-    totalPages = 10
-  }
-
-  const from = Math.floor((filter.page - 1) / totalPages) * totalPages + 1;
-  const to = from + (totalPages - 1);
-  const pages = []
-  for (let x = from; x <= to; x++) {
-    pages.push(x)
-  }
-
-  const pagination = {
-    totalItems  : total,
-    totalPages  : Math.ceil(total / filter.perPage),
-    currentPage : filter.page,
-    perPage     : filter.perPage,
-    pages       : pages
-  }
-  
-  return { users, pagination }
+  const { results, pagination } = await getResultsAndPagination(findAllUserValidation, userSelect, prisma.user, filter)
+  return { results, pagination }
 }
 
 const findById = async(id) => {

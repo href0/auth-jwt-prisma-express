@@ -79,9 +79,9 @@ Ikuti langkah-langkah di bawah ini untuk mulai menggunakan proyek ini:
         
         | ID  | Name 
         |-----|-------|
+        | -1  | Superadmin
         | 1   | Admin
         | 2   | User
-        | 99  | Superadmin
 
     - **Permissions**
         
@@ -93,7 +93,7 @@ Ikuti langkah-langkah di bawah ini untuk mulai menggunakan proyek ini:
         
         | ID | Name       | Email                | roleId
         |----|------------|----------------------|--------|
-        | 1  | superadmin | superadmin@gmail.com | 99
+        | 1  | superadmin | superadmin@gmail.com | -1
         | 2  | admin      | admin@gmail.com      | 1
         | 3  | user       | user@gmail.com       | 2
       

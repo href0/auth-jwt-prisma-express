@@ -22,9 +22,9 @@ const prisma = new PrismaClient({
 })
 
 prisma.$on('query', (e) =>{
-  logger.info('Query: ' + e.query)
-  logger.info('Params: ' + e.params)
-  logger.info('Duration: ' + e.duration + 'ms')
+  logger.info('QUERY : ' + e.query)
+  logger.info('PARAMS : ' + e.params)
+  logger.info('DURATION : ' + e.duration + 'ms')
 })
 prisma.$on('error', (e) =>{
   logger.error(e)

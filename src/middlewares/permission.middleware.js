@@ -10,7 +10,7 @@ export const permissionMiddleware = async (req, res, next) => {
     logger.info('rooute ' + req['originalUrl'])
     logger.info('method ' + req['method'])
 
-    if(req.user.roleId === 99) return next()
+    if(req.user.roleId === -1) return next()
     
     const user = req.user
     const method = req['method']

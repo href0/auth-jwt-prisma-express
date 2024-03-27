@@ -21,6 +21,7 @@ const PORT = process.env.PORT || 3000
 
 app.get("/", async (req, res) => {
   return res.status(200).json({
+    status : 200,
     message: "Welcome to href Corp",
   })
 })

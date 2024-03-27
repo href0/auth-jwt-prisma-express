@@ -14,7 +14,7 @@ export const userSeed = async () => {
       name      : 'Superadmin',
       email     : 'superadmin@gmail.com',
       password  : hashBcrypt("superadmin"),
-      roleId    : 99,
+      roleId    : -1,
       createdAt : new Date().getTime() / 1000,
       updatedAt : new Date().getTime() / 1000
     },
@@ -23,7 +23,7 @@ export const userSeed = async () => {
       name      : 'Superadmin',
       email     : 'superadmin@gmail.com',
       password  : hashBcrypt("superadmin"),
-      roleId    : 99,
+      roleId    : -1,
       createdAt : new Date().getTime() / 1000,
       updatedAt : new Date().getTime() / 1000
     },

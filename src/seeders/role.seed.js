@@ -6,10 +6,10 @@ export const roleSeed = async () => {
   logger.info('excecute role seed!')
   // superadmin => can access all permissions
   await prisma.role.upsert({
-    where : { id : 99 },
+    where : { id : -1 },
     update: {},
     create: {
-      id: 99,
+      id: -1,
       name: 'Superadmin',
     },
   })

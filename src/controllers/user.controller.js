@@ -17,22 +17,8 @@ export const create = async(req, res, next) => {
 
 export const getAll = async (req, res, next) => {
   try {
-    const baseUrl = req['protocol'] + '://' + req.headers['host'] + req['baseUrl'] + '?'
-    let curentUrl = req['_parsedUrl']['query']
-    if(!curentUrl) {
-      curentUrl = `page=${req.query.page}&perPage=${req.query.perPage}`
-    }
-
-    let { pagination, users } = await userService.findAll(req.query)
-
-    pagination = addLinksToPagination(baseUrl, curentUrl, users, pagination, req.query)
-
-    return res.status(200).json({
-      statusCode : 200,
-      message    : 'success',
-      data       : users,
-      pagination : pagination
-    })
+    const { pagination, results } = await userService.findAll(req)
+    return response(res, results, 'success', 200, pagination)
   } catch (error) {
     next(error)
   }
@@ -51,7 +37,7 @@ export const getById = async(req, res, next) =>{
 export const update = async(req, res, next) => {
   try {
     if (
-      req.user.roleId !== 99 &&
+      req.user.roleId !== -1 &&
       +req.params.id !== req.user.sub &&
       req.user.permission.canUpdateOthers === 0
     ) throw new ResponseError(403, "Forbidden")
@@ -67,7 +53,7 @@ export const update = async(req, res, next) => {
 export const updatePassword = async(req, res, next) => {
   try {
     if (
-      req.user.roleId !== 99 &&
+      req.user.roleId !== -1 &&
       +req.params.id !== req.user.sub &&
       req.user.permission.canUpdateOthers === 0
     ) throw new ResponseError(403, "Forbidden")

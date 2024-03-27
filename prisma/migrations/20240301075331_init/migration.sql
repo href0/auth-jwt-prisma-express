@@ -67,6 +67,7 @@ CREATE TABLE `permissions` (
     `subMenuId` INTEGER NOT NULL,
     `route` VARCHAR(191) NOT NULL,
     `method` ENUM('GET', 'POST', 'PUT', 'PATCH', 'DELETE') NOT NULL DEFAULT 'GET',
+    `name` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -128,6 +128,96 @@ const rolePermissionAdmin = async () => {
   /* CHANGE PASSWORD */
 
   await rolePermissionProduct(roleId, "Admin", [7, 8, 9, 10])
+
+  /* Role */
+  await prisma.rolePermission.upsert({
+    where: { id: 16 },
+    update: {
+      roleId: 1, // Admin
+      permissionId: 13, // USER - GET
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+    create: {
+      id: 16,
+      roleId: 1, // Admin
+      permissionId: 13, // USER - GET
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+  })
+  console.log("Role Admin permission for permission ROLE - GET created!")
+
+  await prisma.rolePermission.upsert({
+    where: { id: 17 },
+    update: {
+      roleId: 1, // USER
+      permissionId: 14, // USER - POST
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+    create: {
+      id: 17,
+      roleId: 1, // USER
+      permissionId: 14, // POST
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+  })
+  console.log("Role Admin permission for permission ROLE - POST created!")
+
+  await prisma.rolePermission.upsert({
+    where: { id: 18 },
+    update: {
+      roleId: 1,
+      permissionId: 15,
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+    create: {
+      id: 18,
+      roleId: 1,
+      permissionId: 15,
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+  })
+  console.log("Role Admin permission for permission ROLE - PUT created!")
+
+  await prisma.rolePermission.upsert({
+    where: { id: 19 },
+    update: {
+      roleId: 1,
+      permissionId: 16,
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+    create: {
+      id: 19,
+      roleId: 1,
+      permissionId: 16,
+      active: 1,
+      canUpdateOthers: 1,
+      createdAt: now,
+      updatedAt: now,
+    },
+  })
+  console.log("Role Admin permission for permission ROLE - DELETE created!")
+  /* Role */
 }
 
 const rolePermissionUser = async () => {

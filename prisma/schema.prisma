@@ -81,6 +81,7 @@ model Permission {
   route           String
   method          Method           @default(GET)
   rolePermissions RolePermission[]
+  name            String
 
   @@map("permissions")
 }
