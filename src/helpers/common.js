@@ -84,17 +84,26 @@ export const getResultsAndPagination = async (validationSchema, attributes, pris
     prismaModel.count(noLimit),
     prismaModel.findMany(params),
   ])
+  const totalPages = Math.ceil(total / filter.perPage);
+  const currentPage = Math.min(Math.max(1, filter.page), totalPages);
 
-  let totalPages =  Math.ceil(total / filter.perPage)
-  if(totalPages > 10) {
-    totalPages = 10
+  const split = currentPage.toString().split("")
+  let startPage = split.length > 1 ? parseInt(split[0] + 1) : 1; // Memastikan startPage dimulai dari 1
+  let endPage = startPage + 9; // Menetapkan endPage berdasarkan startPage
+ 
+   // Jika currentPage adalah kelipatan 10
+  if (currentPage % 10 === 0) { 
+    startPage = currentPage - 9;
+    endPage = currentPage;
+  }
+  // Memastikan endPage tidak lebih besar dari totalPages
+  if (endPage > totalPages) {
+      endPage = totalPages;
   }
 
-  const from = Math.floor((filter.page - 1) / totalPages) * totalPages + 1;
-  const to = Math.floor(from / totalPages) + totalPages;
-  const pages = []
-  for (let x = from; x <= to; x++) {
-    pages.push(x)
+  const pages = [];
+  for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
   }
 
   /* Add pagination */
@@ -103,7 +112,7 @@ export const getResultsAndPagination = async (validationSchema, attributes, pris
     totalPages  : Math.ceil(total / filter.perPage),
     currentPage : filter.page,
     perPage     : filter.perPage,
-    pages       : pages,
+    pages       : results.length > 0 ? pages : [],
     links       : null
   }
 

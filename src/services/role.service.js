@@ -83,7 +83,7 @@ const getPermission = async(id) => {
           id : true,
           name : true,
           permission : {
-            where : { subMenuId : { in : subMenusId } },
+            // where : { subMenuId : { in : subMenusId } },
             select : {
               id : true,
               route : true,
@@ -96,24 +96,25 @@ const getPermission = async(id) => {
                   permissionId : true,
                   active : true,
                   canUpdateOthers : true,
-                  createdAt : true,
-                  updatedAt : true
+                  // createdAt : true,
+                  // updatedAt : true
                 },
+                where : { roleId : id }
               }
             }
           }
         }
       }
     },
-    where: {
-      childs: {
-        some: {
-          id: {
-            in: subMenusId,
-          },
-        },
-      },
-    },
+    // where: {
+    //   childs: {
+    //     some: {
+    //       id: {
+    //         in: subMenusId,
+    //       },
+    //     },
+    //   },
+    // },
   })
   // const menus = await prisma.menu.findMany({
   //   include : {
