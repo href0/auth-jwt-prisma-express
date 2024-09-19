@@ -75,8 +75,8 @@ export const getResultsAndPagination = async (validationSchema, attributes, pris
   
   }
 
-  if(filter.search && filter.searchValue) {
-    params['where'] = { [filter.search] : { contains : filter.searchValue } }
+  if(filter.searchBy && filter.searchValue) {
+    params['where'] = { [filter.searchBy] : { contains : filter.searchValue } }
   }
 
   const  { take, skip, select, ...noLimit } = params
