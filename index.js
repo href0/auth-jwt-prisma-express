@@ -13,7 +13,7 @@ app.use(cors({
   origin : [
     'https://dashboard-admin-mazer-angular.vercel.app',
     'http://localhost:4200',
-    'https://angular-rbac.hrefdev.online'
+    'https://angular-rbac.hrefdev.online',
   ],
   credentials : true
 }))
